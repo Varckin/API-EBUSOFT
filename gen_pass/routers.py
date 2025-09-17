@@ -11,7 +11,7 @@ async def health() -> str:
     """Health check specifically for the genpass module."""
     return "ok"
 
-@router.post("/generate", response_model=List[str])
+@router.post("", response_model=List[str])
 async def gen_pass(request: PasswordRequest) -> List[str]:
     """Generate a random password using parameters"""
     result: List[str] = []
