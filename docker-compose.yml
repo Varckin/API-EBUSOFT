@@ -32,7 +32,7 @@ services:
     depends_on:
       - redis
     command: >
-      celery -A celery_conf.celery worker --loglevel=info -c 1
+      celery -A celery_conf.celery_app worker --loglevel=info -c 1
     volumes:
       - ./tmp:/app/tmp
       - ./logs:/app/logs
