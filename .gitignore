@@ -1,0 +1,9 @@
+# folders
+.venv/
+__pycache__/
+tmp/
+logs/
+cookies/
+
+# files
+.env
