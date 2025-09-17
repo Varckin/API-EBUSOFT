@@ -5,6 +5,7 @@ from ytdlp.routers import router as ytdlp
 from gen_uuid.routers import router as genuuid
 from gen_pass.routers import router as genpass
 from ip_geo_lookup.routers import router as ipgeo
+from dns_forw_rev.routers import router as dns
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,6 +17,7 @@ app.include_router(ytdlp)
 app.include_router(genuuid)
 app.include_router(genpass)
 app.include_router(ipgeo)
+app.include_router(dns)
 
 
 @app.get("/health")

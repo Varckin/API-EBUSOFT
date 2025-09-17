@@ -11,7 +11,7 @@ async def health() -> str:
     return "ok"
 
 @router.post("", response_model=IPResponse)
-def ip_lookup_endpoint(request: IPRequest):
+async def ip_lookup(request: IPRequest):
     """
     Lookup IP address information (country, region, city, ASN, provider).
     """
