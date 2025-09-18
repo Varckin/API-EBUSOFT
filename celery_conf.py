@@ -17,3 +17,9 @@ celery_app.autodiscover_tasks(
     related_name='celery_tasks',
     force=True
 )
+
+celery_app.autodiscover_tasks(
+    packages=['base64_coder'],
+    related_name='celery_tasks',
+    force=True
+)

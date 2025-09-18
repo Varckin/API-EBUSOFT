@@ -10,6 +10,7 @@ from traceroute.routers import router as traceroute
 from id_generator.routers import router as idgen
 from slug.routers import router as slug
 from gen_hash.routers import router as hash
+from base64_coder.routers import router as base64
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,6 +27,7 @@ app.include_router(traceroute)
 app.include_router(idgen)
 app.include_router(slug)
 app.include_router(hash)
+app.include_router(base64)
 
 
 @app.get("/health")
