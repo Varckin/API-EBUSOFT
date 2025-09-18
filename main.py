@@ -8,6 +8,7 @@ from ip_geo_lookup.routers import router as ipgeo
 from dns_forw_rev.routers import router as dns
 from traceroute.routers import router as traceroute
 from id_generator.routers import router as idgen
+from slug.routers import router as slug
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,6 +23,7 @@ app.include_router(ipgeo)
 app.include_router(dns)
 app.include_router(traceroute)
 app.include_router(idgen)
+app.include_router(slug)
 
 
 @app.get("/health")
