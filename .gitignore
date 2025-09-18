@@ -5,6 +5,7 @@ tmp/
 logs/
 cookies/
 geo/
+MyTestFolder/
 
 # files
 .env
