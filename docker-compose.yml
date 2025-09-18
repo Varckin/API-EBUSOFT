@@ -29,6 +29,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: api_ebusoft_worker
+    restart: unless-stopped
     depends_on:
       - redis
     command: >
