@@ -9,10 +9,11 @@ from dns_forw_rev.routers import router as dns
 from traceroute.routers import router as traceroute
 from id_generator.routers import router as idgen
 from slug.routers import router as slug
+from gen_hash.routers import router as hash
 from dotenv import load_dotenv
 
 load_dotenv()
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.5.21")
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.6.85")
 
 app.include_router(cert)
 app.include_router(speech)
@@ -24,6 +25,7 @@ app.include_router(dns)
 app.include_router(traceroute)
 app.include_router(idgen)
 app.include_router(slug)
+app.include_router(hash)
 
 
 @app.get("/health")
