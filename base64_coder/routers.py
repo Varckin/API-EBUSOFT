@@ -20,7 +20,7 @@ async def health() -> str:
 
 
 @router.post("/string", response_model=StringResponse)
-def string_action(request: StringRequest):
+async def string_action(request: StringRequest):
     """
     Encode or decode a string using Base64.
     """
