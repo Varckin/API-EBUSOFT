@@ -3,6 +3,7 @@ import yaml
 import xmlschema
 import xml.etree.ElementTree as ET
 from data_validator.models import ValidateResponse
+from data_validator.settings import CONFIG
 from fastapi import UploadFile, HTTPException
 from jsonschema import validate as json_validate, ValidationError, SchemaError
 
@@ -98,3 +99,19 @@ def validate_xml_schema(data: str, xsd_file: str) -> ValidateResponse:
         return ValidateResponse(valid=True, message="Valid XML (XSD OK)", format="xml")
     except xmlschema.XMLSchemaException as e:
         return ValidateResponse(valid=False, message="XML does not match XSD", errors=str(e), format="xml")
+
+# --- Function to check file extension and its size ---
+async def validate_file(file: UploadFile, fmt: str) -> None:
+    """Check file extension and size by configuration"""
+    if fmt not in CONFIG.allowed_extensions:
+        raise HTTPException(status_code=400, detail="Unsupported format")
+
+    if not any(file.filename.lower().endswith(ext) for ext in CONFIG.allowed_extensions[fmt]):
+        raise HTTPException(status_code=400, detail=f"Invalid file extension for {fmt}: {file.filename}")
+    
+    content = await file.read()
+    if len(content) > CONFIG.max_file_size:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File too large. Maximum allowed size is {CONFIG.max_file_size // 1024} KB"
+        )

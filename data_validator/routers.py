@@ -2,10 +2,11 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from typing import Optional
 import json
 from data_validator.models import ValidateResponse
+from data_validator.settings import CONFIG
 from data_validator.service import (validate_json_string, read_file,
                                     validate_xml_string, validate_yaml_string,
                                     validate_json_schema, validate_xml_schema,
-                                    validate_yaml_schema)
+                                    validate_yaml_schema, validate_file)
 
 
 router = APIRouter(prefix="/validator", tags=["validator"])
@@ -29,10 +30,11 @@ async def validate_string(
         raise HTTPException(status_code=400, detail="Provide either 'data' or 'file' for validation")
 
     # Read file content if provided
+    fmt = format.lower()
     if file:
+        await validate_file(file, fmt)
         data = await read_file(file)
 
-    fmt = format.lower()
     if fmt == "json":
         return validate_json_string(data)
     elif fmt == "yaml":
@@ -59,19 +61,27 @@ async def validate_schema(
     if not schema:
         raise HTTPException(status_code=400, detail="Schema file is required for schema validation")
     
+    fmt = format.lower()
+
+    if file:
+        await validate_file(file, fmt)
+        data = await read_file(file)
+
+    if fmt in ["json", "yaml"]:
+        await validate_file(schema, "json")
+    elif fmt == "xml":
+        await validate_file(schema, "xsd")
+    else:
+        raise HTTPException(status_code=400, detail="Format must be one of: json, yaml, xml")
+
+    
     schema_content = await read_file(schema)
     
-    fmt = format.lower()
     if fmt in ["json", "yaml"]:
         try:
             schema_dict = json.loads(schema_content)
         except json.JSONDecodeError as e:
             raise HTTPException(status_code=400, detail=f"Invalid JSON schema: {str(e)}")
-        if fmt == "json":
-            return validate_json_schema(data, schema_dict)
-        else:
-            return validate_yaml_schema(data, schema_dict)
-    elif fmt == "xml":
+        return validate_json_schema(data, schema_dict) if fmt == "json" else validate_yaml_schema(data, schema_dict)
+    else:  # xml
         return validate_xml_schema(data, schema_content)
-    else:
-        raise HTTPException(status_code=400, detail="Format must be one of: json, yaml, xml")
