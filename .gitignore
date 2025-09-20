@@ -6,6 +6,8 @@ logs/
 cookies/
 geo/
 MyTestFolder/
+security/
+gen_faker/
 
 # files
 .env

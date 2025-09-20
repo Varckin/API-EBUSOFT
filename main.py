@@ -18,10 +18,11 @@ from url_codec.routers import router as urlcodec
 from qr_code.routers import router as qr_code
 from data_validator.routers import router as validator
 from data_converter.routers import router as converter
+from security.routers import router as security
 from dotenv import load_dotenv
 
 load_dotenv()
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.8.98",
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.9.12",
               redoc_url=None)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -42,6 +43,7 @@ app.include_router(urlcodec)
 app.include_router(qr_code)
 app.include_router(validator)
 app.include_router(converter)
+app.include_router(security)
 
 
 @app.get("/health")
