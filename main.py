@@ -21,6 +21,7 @@ from data_converter.routers import router as converter
 from security.AES.routers import router as aes
 from security.PGP.routers import router as pgp
 from security.RSA.routers import router as rsa
+from gen_faker.routers import router as faker
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -48,6 +49,7 @@ app.include_router(converter)
 app.include_router(aes)
 app.include_router(pgp)
 app.include_router(rsa)
+app.include_router(faker)
 
 
 @app.get("/health")
