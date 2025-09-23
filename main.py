@@ -18,7 +18,9 @@ from url_codec.routers import router as urlcodec
 from qr_code.routers import router as qr_code
 from data_validator.routers import router as validator
 from data_converter.routers import router as converter
-from security.routers import router as security
+from security.AES.routers import router as aes
+from security.PGP.routers import router as pgp
+from security.RSA.routers import router as rsa
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -43,7 +45,9 @@ app.include_router(urlcodec)
 app.include_router(qr_code)
 app.include_router(validator)
 app.include_router(converter)
-app.include_router(security)
+app.include_router(aes)
+app.include_router(pgp)
+app.include_router(rsa)
 
 
 @app.get("/health")
