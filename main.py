@@ -10,7 +10,7 @@ from gen_pass.routers import router as genpass
 from ip_geo_lookup.routers import router as ipgeo
 from dns_forw_rev.routers import router as dns
 from traceroute.routers import router as traceroute
-from id_generator.routers import router as idgen
+from gen_id.routers import router as idgen
 from slug.routers import router as slug
 from gen_hash.routers import router as hash
 from base64_coder.routers import router as base64
