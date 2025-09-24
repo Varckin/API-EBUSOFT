@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from id_generator.models import IDRequest, IDResponse
-from id_generator.service import generate_identifier
+from gen_id.models import IDRequest, IDResponse
+from gen_id.service import generate_identifier
 
 
 router = APIRouter(prefix="/idgen", tags=["idgen"])
