@@ -15,7 +15,13 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         ip_header = request.headers.get("X-Forwarded-For")
-        ip = ip_header.split(",")[0].strip() if ip_header else request.client.host
+        if ip_header:
+            ip = ip_header.split(",")[0].strip()
+        else:
+            ip = request.headers.get("X-Real-IP")
+
+        if not ip:
+            ip = request.client.host
 
         key = f"rate:{ip}"
 
