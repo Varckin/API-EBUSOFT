@@ -22,10 +22,11 @@ from security.AES.routers import router as aes
 from security.PGP.routers import router as pgp
 from security.RSA.routers import router as rsa
 from gen_faker.routers import router as faker
+from clamav_antivirus.routers import router as clamav
 from dotenv import load_dotenv
 
 load_dotenv()
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.9.12",
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.9.51",
               redoc_url=None)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -50,6 +51,7 @@ app.include_router(aes)
 app.include_router(pgp)
 app.include_router(rsa)
 app.include_router(faker)
+app.include_router(clamav)
 
 
 @app.get("/health")

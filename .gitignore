@@ -1,6 +1,7 @@
 # folders
 .venv/
 __pycache__/
+.pytest_cache/
 tmp/
 logs/
 cookies/
