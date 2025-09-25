@@ -1,6 +1,6 @@
 import logging
 import logging.handlers
-from logger.settings import logger_settings
+from logger.settings import CONFIG
 
 
 def get_logger(name: str = "api_log") -> logging.Logger:
@@ -9,23 +9,23 @@ def get_logger(name: str = "api_log") -> logging.Logger:
     Protection against duplicate handlers when called repeatedly.
     """
     logger = logging.getLogger(name)
-    logger.setLevel(logger_settings.level)
+    logger.setLevel(CONFIG.level)
     logger.propagate = False
 
     if not logger.handlers:
         file_handler = logging.handlers.RotatingFileHandler(
-            filename=str(logger_settings.log_dir / logger_settings.file_template.format(name=name)),
-            maxBytes=logger_settings.max_bytes,
-            backupCount=logger_settings.backup_count,
+            filename=str(CONFIG.log_dir / CONFIG.file_template.format(name=name)),
+            maxBytes=CONFIG.max_bytes,
+            backupCount=CONFIG.backup_count,
             encoding="utf-8",
         )
-        file_handler.setLevel(logger_settings.level)
-        file_handler.setFormatter(logging.Formatter(logger_settings.fmt))
+        file_handler.setLevel(CONFIG.level)
+        file_handler.setFormatter(logging.Formatter(CONFIG.fmt))
         logger.addHandler(file_handler)
 
-        if getattr(logger_settings, "enable_console", False):
+        if getattr(CONFIG, "enable_console", False):
             stream_handler = logging.StreamHandler()
-            stream_handler.setLevel(logger_settings.level)
-            stream_handler.setFormatter(logging.Formatter(logger_settings.fmt))
+            stream_handler.setLevel(CONFIG.level)
+            stream_handler.setFormatter(logging.Formatter(CONFIG.fmt))
             logger.addHandler(stream_handler)
     return logger

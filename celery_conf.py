@@ -1,9 +1,10 @@
 from celery import Celery
+from os import getenv
 
 celery_app = Celery(
     'tasks',
-    broker='redis://redis:6379/0',
-    backend='redis://redis:6379/1'
+    broker=getenv('REDIS_BROKER_URL'),
+    backend=getenv('REDIS_RESULT_BACKEND')
 )
 
 celery_app.conf.update(

@@ -42,5 +42,5 @@ class LoggerSettings(BaseModel):
         description="Additionally log to console (stdout).",
     )
 
-logger_settings = LoggerSettings()
-logger_settings.log_dir.mkdir(parents=True, exist_ok=True)
+CONFIG = LoggerSettings()
+CONFIG.log_dir.mkdir(parents=True, exist_ok=True)

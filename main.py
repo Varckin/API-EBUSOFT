@@ -23,12 +23,15 @@ from security.PGP.routers import router as pgp
 from security.RSA.routers import router as rsa
 from gen_faker.routers import router as faker
 from clamav_antivirus.routers import router as clamav
+
+from core.middleware import RateLimitMiddleware
 from dotenv import load_dotenv
 
 load_dotenv()
 app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.9.51",
               redoc_url=None)
 
+app.add_middleware(RateLimitMiddleware)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(cert)
