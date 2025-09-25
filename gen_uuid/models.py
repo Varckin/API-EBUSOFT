@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, model_validator
 from typing import Literal, Optional
 
 class UUIDRequest(BaseModel):
@@ -6,8 +6,8 @@ class UUIDRequest(BaseModel):
     count: int = Field(1, ge=1, le=100, description="Number of UUIDs to generate")
     text: Optional[str] = Field(None, description="String for UUID v3/v5")
 
-    @field_validator("text")
-    def validate_text(cls, v, values):
-        if values["version"] in ["v3", "v5"] and not v:
-            raise ValueError("For v3 and v5 versions, the 'text' field must be specified")
-        return v
+    @model_validator(mode="after")
+    def check_text_for_version(cls, model):
+        if model.version in ["v3", "v5"] and (not model.text or not model.text.strip()):
+            raise ValueError("For v3 and v5 versions, the 'text' field must be specified and non-empty")
+        return model
