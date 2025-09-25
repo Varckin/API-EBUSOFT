@@ -22,6 +22,8 @@ services:
     volumes:
       - ./tmp:/app/tmp
       - ./logs:/app/logs
+    env_file:
+      - .env
     restart: unless-stopped
 
   worker:
@@ -37,6 +39,8 @@ services:
     volumes:
       - ./tmp:/app/tmp
       - ./logs:/app/logs
+    env_file:
+      - .env
     networks:
       - xyz
 

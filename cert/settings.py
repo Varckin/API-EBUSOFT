@@ -3,7 +3,7 @@ from os import getenv
 
 
 class CertSettings(BaseModel):
-    crt_base: AnyHttpUrl = getenv('CRT_BASE', '')
+    crt_base: AnyHttpUrl = getenv('CRT_BASE')
 
     # Network settings
     connect_timeout_s: float = 5.0
