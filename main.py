@@ -28,7 +28,7 @@ from core.middleware import RateLimitMiddleware
 from dotenv import load_dotenv
 
 load_dotenv()
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "0.9.51",
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.0 (MVP)",
               redoc_url=None)
 
 app.add_middleware(RateLimitMiddleware)
