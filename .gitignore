@@ -6,7 +6,7 @@ tmp/
 logs/
 cookies/
 geo/
-MyTestFolder/
+internal_functional/
 tests/
 
 # files
