@@ -9,7 +9,7 @@ from cert.models import CrtShRawItem, CrtShItem
 from cert.settings import settings
 
 
-def _build_query(domain: str, exact: bool) -> str:
+def _build_query(domain: str, exact: bool, include_expired: bool) -> str:
     """
     Build query string for site.
     exact=True  -> q=<domain>

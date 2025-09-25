@@ -1,4 +1,4 @@
-import clamd
+import clamd, io
 from fastapi import UploadFile, HTTPException
 
 from clamav_antivirus.settings import CONFIG
@@ -29,7 +29,8 @@ async def scan_file(file: UploadFile) -> ScanResponse:
 
     try:
         client = get_clamd_client()
-        result = client.instream(contents)
+        file_stream = io.BytesIO(contents)
+        result = client.instream(file_stream)
 
         if not result:
             return ScanResponse(filename=file.filename, is_infected=False)
