@@ -24,11 +24,14 @@ from security.RSA.routers import router as rsa
 from gen_faker.routers import router as faker
 from clamav_antivirus.routers import router as clamav
 
+from internal_functional.sollaire.routers import router as sollaire
+from internal_functional.info.routers import router as info
+
 from core.middleware import RateLimitMiddleware
 from dotenv import load_dotenv
 
 load_dotenv()
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.0 (MVP)",
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.12 (MVP)",
               redoc_url=None)
 
 app.add_middleware(RateLimitMiddleware)
@@ -55,6 +58,9 @@ app.include_router(pgp)
 app.include_router(rsa)
 app.include_router(faker)
 app.include_router(clamav)
+
+app.include_router(sollaire, include_in_schema=False)
+app.include_router(info, include_in_schema=False)
 
 
 @app.get("/health")
