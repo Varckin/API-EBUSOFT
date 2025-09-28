@@ -10,6 +10,7 @@ class PathsSettings(BaseModel):
     """File paths and temporary file limits."""
     TMP_DIR: Path = Field(default=Path("./tmp/speech"), description="Folder for temporary audio files.")
     MAX_TMP_FILES: PositiveInt = Field(default=40, description="File limit in TMP_DIR, after which the folder is cleaned.")
+    MAX_FILE_SIZE_MB: PositiveInt = Field(default=15, description="Maximum upload size for audio files in megabytes.")
 
 
 class STTSettings(BaseModel):
@@ -35,15 +36,4 @@ class SpeechSettings(BaseModel):
 
 SETTINGS = SpeechSettings()
 
-TMP_DIR: Path = SETTINGS.PATHS.TMP_DIR
-MAX_TMP_FILES: int = SETTINGS.PATHS.MAX_TMP_FILES
-
-WHISPER_MODEL: str = SETTINGS.STT.WHISPER_MODEL
-AUDIO_FRAME_RATE: int = SETTINGS.STT.AUDIO_FRAME_RATE
-AUDIO_CHANNELS: int = SETTINGS.STT.AUDIO_CHANNELS
-
-TTS_DEFAULT_LANG: str = SETTINGS.TTS.DEFAULT_LANG
-TTS_OUTPUT_FORMAT: str = SETTINGS.TTS.OUTPUT_FORMAT
-TTS_OGG_CODEC: str = SETTINGS.TTS.OGG_CODEC
-
-TMP_DIR.mkdir(parents=True, exist_ok=True)
+SETTINGS.PATHS.TMP_DIR.mkdir(parents=True, exist_ok=True)

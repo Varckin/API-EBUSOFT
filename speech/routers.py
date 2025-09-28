@@ -1,9 +1,10 @@
-from fastapi import APIRouter, UploadFile, File, Form
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi import APIRouter, UploadFile, File, HTTPException, Body
+from fastapi.responses import FileResponse
 
 from speech.STT import STT
 from speech.TTS import TTS
-from speech.settings import TMP_DIR, TTS_DEFAULT_LANG
+from speech.settings import SETTINGS
+from speech.models import STTResponse, TTSRequest
 
 router = APIRouter(prefix="/speech", tags=["speech"])
 
@@ -14,35 +15,39 @@ async def health() -> str:
     return "ok"
 
 
-@router.post("/stt")
+@router.post("/stt", response_model=STTResponse)
 async def speech_to_text(file: UploadFile = File(...)):
     """
     Convert speech to text.
     Accepts an audio file, returns recognized text and language.
     """
     stt = STT()
+    contents = await file.read()
 
-    source_path = TMP_DIR / file.filename
-    destination_path = TMP_DIR / f"stt_{file.filename}.wav"
+    if len(contents) > SETTINGS.PATHS.MAX_FILE_SIZE_MB * 1024 * 1024:
+        raise HTTPException(
+            status_code=413,
+            detail=f"File too large. Max allowed size is {SETTINGS.PATHS.MAX_FILE_SIZE_MB} MB."
+        )
+
+    source_path = SETTINGS.PATHS.TMP_DIR / file.filename
+    destination_path = SETTINGS.PATHS.TMP_DIR / f"stt_{file.filename}.wav"
 
     with open(source_path, "wb") as f:
-        f.write(await file.read())
+        f.write(contents)
 
     text, lang = stt.convert_voice_to_text(source_path, destination_path)
-    return JSONResponse(content={"text": text, "language": lang})
+    return STTResponse(text=text, language=lang)
 
 
 @router.post("/tts")
-async def text_to_speech(
-    text: str = Form(...),
-    lang: str = Form(TTS_DEFAULT_LANG),
-):
+async def text_to_speech(request: TTSRequest = Body(...)):
     """
     Convert text to speech.
     Accepts text and language (e.g., 'en', 'ru'), returns .ogg/.mp3/.wav (based on settings).
     """
     tts = TTS()
-    output_path = tts.convert_text_to_voice(text, lang)
+    output_path = tts.convert_text_to_voice(request.text, request.lang)
     return FileResponse(
         path=output_path,
         media_type=f"audio/{output_path.suffix.lstrip('.')}",
