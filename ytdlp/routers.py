@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pathlib import Path
-import urllib.parse
 
 from ytdlp.celery_tasks import down_youtube, down_instagram, down_soundcloud
 from celery.result import AsyncResult
@@ -38,8 +37,7 @@ async def youtube_status(task_id: str):
 
 @router.get("/download/{filename:path}")
 async def youtube_download_zip(filename: str):
-    decode_path = urllib.parse.unquote(urllib.parse.unquote(filename))
-    zip_path = Path(decode_path)
+    zip_path = Path(filename)
     if zip_path.exists():
         return FileResponse(zip_path, filename=zip_path.name)
     raise HTTPException(status_code=404, detail="ZIP not found")
