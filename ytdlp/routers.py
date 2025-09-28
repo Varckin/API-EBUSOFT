@@ -10,6 +10,11 @@ from ytdlp.models import DownloadRequest
 router = APIRouter(prefix="/ytdlp", tags=["ytdlp"])
 
 
+@router.get("/health", response_model=str)
+async def health() -> str:
+    """Health check specifically for the ytdlp module."""
+    return "ok"
+
 @router.post("/youtube")
 async def youtube_rout(data: DownloadRequest):
     """Start a background task to download a YouTube video."""
