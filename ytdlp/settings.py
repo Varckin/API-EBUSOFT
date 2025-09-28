@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field
 from pathlib import Path
 
 
@@ -15,8 +15,3 @@ SETTINGS = Settings()
 SETTINGS.TMP_DIR_YOUTUBE.mkdir(parents=True, exist_ok=True)
 SETTINGS.TMP_DIR_INSTAGRAM.mkdir(parents=True, exist_ok=True)
 SETTINGS.TMP_DIR_SOUNDCLOUD.mkdir(parents=True, exist_ok=True)
-
-
-class DownloadRequest(BaseModel):
-    url: HttpUrl
-    id: int

@@ -3,7 +3,7 @@ from pathlib import Path
 from ytdlp.settings import SETTINGS
 from logger.init_logger import get_logger
 
-logger = get_logger()
+logger = get_logger('soundcloud')
 
 
 class SoundCloud:

@@ -4,7 +4,7 @@ from yt_dlp import YoutubeDL
 from logger.init_logger import get_logger
 from ytdlp.settings import SETTINGS
 
-logger = get_logger()
+logger = get_logger('insta')
 
 
 class Instagram:

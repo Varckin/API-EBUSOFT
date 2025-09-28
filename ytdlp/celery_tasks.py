@@ -8,7 +8,7 @@ from ytdlp.youtube import Youtube
 from ytdlp.soundcloud import SoundCloud
 from ytdlp.instagram import Instagram
 
-logger = get_logger()
+logger = get_logger('ytdlp_celery')
 
 def make_zip(files: list[Path], dir: Path) -> Path:
     if not files:

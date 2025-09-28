@@ -3,7 +3,7 @@ from pathlib import Path
 from logger.init_logger import get_logger
 from ytdlp.settings import SETTINGS
 
-logger = get_logger()
+logger = get_logger('youtube')
 
 
 class Youtube:

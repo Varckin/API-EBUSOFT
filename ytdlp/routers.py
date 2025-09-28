@@ -5,24 +5,24 @@ from pathlib import Path
 from ytdlp.celery_tasks import down_youtube, down_instagram, down_soundcloud
 from celery.result import AsyncResult
 from celery_conf import celery_app
-from ytdlp.settings import DownloadRequest
+from ytdlp.models import DownloadRequest
 
 router = APIRouter(prefix="/ytdlp", tags=["ytdlp"])
 
 
 @router.post("/youtube")
 async def youtube_rout(data: DownloadRequest):
-    task = down_youtube.delay(data.url, data.id)
+    task = down_youtube.delay(str(data.url), data.id)
     return {"status": "started", "task_id": task.id}
 
 @router.post("/soundcloud")
 async def soundcloud_rout(data: DownloadRequest):
-    task = down_soundcloud.delay(data.url, data.id)
+    task = down_soundcloud.delay(str(data.url), data.id)
     return {"status": "started", "task_id": task.id}
 
 @router.post("/instagram")
 async def instagram_rout(data: DownloadRequest):
-    task = down_instagram.delay(data.url, data.id)
+    task = down_instagram.delay(str(data.url), data.id)
     return {"status": "started", "task_id": task.id}
 
 @router.get("/status/{task_id}")
