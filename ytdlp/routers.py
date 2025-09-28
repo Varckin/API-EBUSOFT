@@ -36,7 +36,7 @@ async def youtube_status(task_id: str):
         return {"status": "done", "zip_url": None}
     return {"status": task_result.state}
 
-@router.get("/download/{filename}")
+@router.get("/download/{filename:path}")
 async def youtube_download_zip(filename: str):
     decode_path = urllib.parse.unquote(urllib.parse.unquote(filename))
     zip_path = Path(decode_path)
