@@ -12,12 +12,18 @@ class IPGeoService:
         self.country_reader = geoip2.database.Reader(SETTINGS.COUNTRY_DB_PATH)
 
     def _validate_ip(self, ip: str):
+        """
+        Validates the provided IP address.
+        """
         try:
             ipaddress.ip_address(ip)
         except ValueError:
             raise ValueError("Invalid IP address")
 
     def get_country(self, ip: str) -> Optional[str]:
+        """
+        Retrieves the ISO country code associated with the given IP address.
+        """
         self._validate_ip(ip)
         try:
             data = self.country_reader.country(ip)
@@ -26,6 +32,9 @@ class IPGeoService:
             return None
 
     def get_city(self, ip: str) -> Tuple[Optional[str], Optional[str]]:
+        """
+        Retrieves the region (state/province) and city associated with the given IP address.
+        """
         self._validate_ip(ip)
         try:
             data = self.city_reader.city(ip)
@@ -34,6 +43,9 @@ class IPGeoService:
             return None, None
 
     def get_asn(self, ip: str) -> Tuple[Optional[str], Optional[str]]:
+        """
+        Retrieves the Autonomous System Number (ASN) and organization for the given IP address.
+        """
         self._validate_ip(ip)
         try:
             data = self.asn_reader.asn(ip)
@@ -42,6 +54,9 @@ class IPGeoService:
             return None, None
         
     def lookup(self, ip: str) -> IPResponse:
+        """
+        Performs a full IP lookup, combining country, region, city, ASN, and provider information.
+        """
         self._validate_ip(ip)
         country = self.get_country(ip)
         region, city = self.get_city(ip)

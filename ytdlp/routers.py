@@ -12,21 +12,25 @@ router = APIRouter(prefix="/ytdlp", tags=["ytdlp"])
 
 @router.post("/youtube")
 async def youtube_rout(data: DownloadRequest):
+    """Start a background task to download a YouTube video."""
     task = down_youtube.delay(str(data.url), data.id)
     return {"status": "started", "task_id": task.id}
 
 @router.post("/soundcloud")
 async def soundcloud_rout(data: DownloadRequest):
+    """Start a background task to download a SoundCloud track."""
     task = down_soundcloud.delay(str(data.url), data.id)
     return {"status": "started", "task_id": task.id}
 
 @router.post("/instagram")
 async def instagram_rout(data: DownloadRequest):
+    """Start a background task to download an Instagram video."""
     task = down_instagram.delay(str(data.url), data.id)
     return {"status": "started", "task_id": task.id}
 
 @router.get("/status/{task_id}")
 async def youtube_status(task_id: str):
+    """Return the current status of a download task by task ID."""
     task_result = AsyncResult(task_id, app=celery_app)
     if task_result.state == "SUCCESS":
         file_path = task_result.result
@@ -37,6 +41,7 @@ async def youtube_status(task_id: str):
 
 @router.get("/download/{filename:path}")
 async def youtube_download_zip(filename: str):
+    """Return the requested ZIP file if it exists, or 404 if not found."""
     zip_path = Path(filename)
     if zip_path.exists():
         return FileResponse(zip_path, filename=zip_path.name)

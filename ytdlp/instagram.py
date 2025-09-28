@@ -15,9 +15,11 @@ class Instagram:
 
     @staticmethod
     def is_instagram_url(url: str) -> bool:
+        """Check if the given URL is a valid Instagram post or reel URL."""
         return any(sub in url for sub in ["instagram.com/reels/", "instagram.com/reel/", "instagram.com/p/", "instagram.com/tv/"])
 
     def download(self, url: str) -> Path | None:
+        """Download the Instagram video from the given URL and return the local file path, or None if failed."""
         if not self.is_instagram_url(url):
             logger.info(f"Instagram - Not valid url: {url}")
             return None

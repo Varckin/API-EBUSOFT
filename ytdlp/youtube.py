@@ -13,6 +13,7 @@ class Youtube:
         self.DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
     def download_audio(self, url: str) -> list[Path]:
+        """Download audio from the given YouTube URL and return a list of downloaded file paths."""
         before_files = set(self.DOWNLOAD_DIR.glob('*.m4a'))
 
         ydl_opts = {
