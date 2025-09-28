@@ -1,12 +1,14 @@
-import zipfile
+import zipfile, shutil
 from datetime import datetime
 from pathlib import Path
 from celery_conf import celery_app
 from logger.init_logger import get_logger
+from celery.schedules import crontab
 
 from ytdlp.youtube import Youtube
 from ytdlp.soundcloud import SoundCloud
 from ytdlp.instagram import Instagram
+from ytdlp.settings import SETTINGS
 
 logger = get_logger('ytdlp_celery')
 
@@ -48,3 +50,37 @@ def down_instagram(url: str, id: int) -> str:
     file_path = insta.download(url)
     zip_path = make_zip([file_path], insta.DOWNLOAD_DIR)
     return str(zip_path) if zip_path else ""
+
+
+@celery_app.task
+def clear_download_dirs_and_files():
+    dirs_to_clean: list[Path] = [
+        SETTINGS.TMP_DIR_INSTAGRAM,
+        SETTINGS.TMP_DIR_SOUNDCLOUD,
+        SETTINGS.TMP_DIR_YOUTUBE
+    ]
+
+    for dir_path in dirs_to_clean:
+        if dir_path.exists() and dir_path.is_dir():
+            for item in dir_path.iterdir():
+                try:
+                    if item.is_file():
+                        item.unlink(missing_ok=True)
+                        logger.info(f"Deleted file: {item}")
+                    elif item.is_dir():
+                        shutil.rmtree(item, ignore_errors=True)
+                        logger.info(f"Deleted directory: {item}")
+                except Exception as e:
+                    logger.error(f"Failed to delete {item}: {e}")
+            logger.info(f"Cleaned directory: {dir_path}")        
+        else:
+            logger.warning(f"Directory does not exist: {dir_path}")
+
+
+celery_app.conf.beat_schedule = {
+    'clear_download': {
+        'task': 'ytdlp.celery_tasks.clear_download_dirs_and_files',
+        'schedule': crontab(minute=0, hour=0),
+        'args': (),
+    },
+}

@@ -17,7 +17,7 @@ class Youtube:
 
         ydl_opts = {
             'cookiefile': str(self.YOUTUBE_COOKIES_FILE),
-            "format": "bestaudio/best",
+            "format": "bestaudio/best/best",
             "outtmpl": str(self.DOWNLOAD_DIR / "%(artist,NA)s - %(track,title)s.%(ext)s"),
             "postprocessors": [
                 {
