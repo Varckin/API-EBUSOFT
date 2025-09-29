@@ -1,7 +1,7 @@
 from fastapi import Request, HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 import redis.asyncio as redis
-from core.settings import CONFIG
+from core.rate_limit.settings import CONFIG
 from logger.init_logger import get_logger
 
 

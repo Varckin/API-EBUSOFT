@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
@@ -23,18 +24,29 @@ from security.PGP.routers import router as pgp
 from security.RSA.routers import router as rsa
 from gen_faker.routers import router as faker
 from clamav_antivirus.routers import router as clamav
+from core.auth.user_endpoints import router as auth_user
 
 from internal_functional.sollaire.routers import router as sollaire
 from internal_functional.info.routers import router as info
+from core.auth.admin_endpoints import router as auth_admin
 
-from core.middleware import RateLimitMiddleware
+from core.rate_limit.middleware import RateLimitMiddleware
+from core.auth.middleware import TokenAuthMiddleware
+from core.auth.database import init_db
 from dotenv import load_dotenv
 
 load_dotenv()
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.12 (MVP)",
-              redoc_url=None)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    yield
+
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.38 (MVP)",
+              redoc_url=None, lifespan=lifespan)
 
 app.add_middleware(RateLimitMiddleware)
+app.add_middleware(TokenAuthMiddleware)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(cert)
@@ -58,9 +70,11 @@ app.include_router(pgp)
 app.include_router(rsa)
 app.include_router(faker)
 app.include_router(clamav)
+app.include_router(auth_user)
 
 app.include_router(sollaire, include_in_schema=False)
 app.include_router(info, include_in_schema=False)
+app.include_router(auth_admin, include_in_schema=False)
 
 
 @app.get("/health")
