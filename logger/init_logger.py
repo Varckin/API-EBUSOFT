@@ -20,12 +20,12 @@ def get_logger(name: str = "api_log") -> logging.Logger:
             encoding="utf-8",
         )
         file_handler.setLevel(CONFIG.level)
-        file_handler.setFormatter(logging.Formatter(CONFIG.fmt))
+        file_handler.setFormatter(logging.Formatter(CONFIG.fmt, datefmt=CONFIG.datefmt))
         logger.addHandler(file_handler)
 
         if getattr(CONFIG, "enable_console", False):
             stream_handler = logging.StreamHandler()
             stream_handler.setLevel(CONFIG.level)
-            stream_handler.setFormatter(logging.Formatter(CONFIG.fmt))
+            stream_handler.setFormatter(logging.Formatter(CONFIG.fmt, datefmt=CONFIG.datefmt))
             logger.addHandler(stream_handler)
     return logger

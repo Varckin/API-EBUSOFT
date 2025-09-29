@@ -33,6 +33,10 @@ class LoggerSettings(BaseModel):
         default="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         description="Log message format.",
     )
+    datefmt: str = Field(
+        default="%Y-%m-%d %H:%M:%S",
+        description="Date format for asctime (by default without milliseconds).",
+    )
     level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = Field(
         default="DEBUG",
         description="Logging level.",
