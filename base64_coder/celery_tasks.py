@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta, timezone
 from base64_coder.settings import CONFIG
 from celery_conf import celery_app
+from logger.init_logger import get_logger
 
+
+logger = get_logger('base64_celery')
 
 @celery_app.task
 def clean_temp_files():
@@ -15,5 +18,6 @@ def clean_temp_files():
             if now - modified_time > timedelta(days=1):
                 try:
                     file_path.unlink()
+                    logger.info(f"Deleted old temp file: {file_path}")
                 except Exception as e:
-                    print(f"Error deleting file {file_path}: {e}")
+                    logger.error(f"Failed to delete file {file_path}: {e}")
