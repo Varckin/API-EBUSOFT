@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -33,6 +33,7 @@ from core.auth.admin_endpoints import router as auth_admin
 from core.rate_limit.middleware import RateLimitMiddleware
 from core.auth.middleware import TokenAuthMiddleware
 from core.auth.database import init_db
+from core.auth.dependencies import require_role
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -49,31 +50,31 @@ app.add_middleware(RateLimitMiddleware)
 app.add_middleware(TokenAuthMiddleware)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app.include_router(cert)
-app.include_router(speech)
-app.include_router(ytdlp)
-app.include_router(genuuid)
-app.include_router(genpass)
-app.include_router(ipgeo)
-app.include_router(dns)
-app.include_router(traceroute)
-app.include_router(idgen)
-app.include_router(slug)
-app.include_router(hash)
-app.include_router(base64)
-app.include_router(urlcodec)
-app.include_router(qr_code)
-app.include_router(validator)
-app.include_router(converter)
-app.include_router(aes)
-app.include_router(pgp)
-app.include_router(rsa)
-app.include_router(faker)
-app.include_router(clamav)
-app.include_router(auth_user)
+app.include_router(cert, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(speech, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(ytdlp, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(genuuid, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(genpass, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(ipgeo, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(dns, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(traceroute, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(idgen, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(slug, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(hash, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(base64, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(urlcodec, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(qr_code, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(validator, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(converter, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(aes, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(pgp, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(rsa, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(faker, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(clamav, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(auth_user, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 
-app.include_router(sollaire, include_in_schema=False)
-app.include_router(info, include_in_schema=False)
+app.include_router(sollaire, include_in_schema=False, dependencies=[Depends(require_role('admin'))])
+app.include_router(info, include_in_schema=False, dependencies=[Depends(require_role('admin'))])
 app.include_router(auth_admin, include_in_schema=False)
 
 
