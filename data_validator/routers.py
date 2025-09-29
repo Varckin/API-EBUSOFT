@@ -2,7 +2,6 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from typing import Optional
 import json
 from data_validator.models import ValidateResponse
-from data_validator.settings import CONFIG
 from data_validator.service import (validate_json_string, read_file,
                                     validate_xml_string, validate_yaml_string,
                                     validate_json_schema, validate_xml_schema,
