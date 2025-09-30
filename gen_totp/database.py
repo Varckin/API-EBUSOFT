@@ -29,6 +29,10 @@ async def get_db():
 # CRUD func
 
 async def create_totp(session: AsyncSession, service_name: str, secret_key: str) -> TotpCreateResponse:
+    """
+    Create a new TOTP entry with a service name and secret key.
+    Returns the created TOTP record with ID and creation timestamp.
+    """
     encrypted_secret = encrypt_secret(secret_key)
     db_obj = TotpTable(
         service_name=service_name,
@@ -48,6 +52,10 @@ async def create_totp(session: AsyncSession, service_name: str, secret_key: str)
 
 
 async def get_service(session: AsyncSession, service_id: str) -> TotpTable | None:
+    """
+    Retrieve a TOTP entry by its ID.
+    Returns the TOTP record or None if not found.
+    """
     result = await session.execute(
         select(TotpTable).where(TotpTable.id == service_id)
     )
@@ -55,6 +63,10 @@ async def get_service(session: AsyncSession, service_id: str) -> TotpTable | Non
 
 
 async def delete_service(session: AsyncSession, service_id: str) -> TotpDeleteResponse | None:
+    """
+    Delete a TOTP entry by ID.
+    Returns a deletion status response or None if the TOTP was not found.
+    """
     db_obj = await get_service(session, service_id)
     if not db_obj:
         return None
@@ -70,6 +82,11 @@ async def delete_service(session: AsyncSession, service_id: str) -> TotpDeleteRe
 
 
 async def generate_totp_code(session: AsyncSession, service_id: str) -> TotpGenerateResponse | None:
+    """
+    Generate the current TOTP code for a given TOTP ID.
+    Updates the last_used_at timestamp and returns the code.
+    Returns None if TOTP entry not found.
+    """
     db_obj = await get_service(session, service_id)
     if not db_obj:
         return None

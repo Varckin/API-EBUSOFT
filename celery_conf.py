@@ -24,3 +24,9 @@ celery_app.autodiscover_tasks(
     related_name='celery_tasks',
     force=True
 )
+
+celery_app.autodiscover_tasks(
+    packages=['gen_totp'],
+    related_name='celery_tasks',
+    force=True
+)

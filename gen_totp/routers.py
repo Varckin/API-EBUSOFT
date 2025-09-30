@@ -20,6 +20,10 @@ router = APIRouter(prefix="/totp", tags=["TOTP"])
 
 @router.post("/create", response_model=TotpCreateResponse)
 async def create_totp_endpoint(data: TotpCreateRequest, db: AsyncSession = Depends(get_db)):
+    """
+    Create a new TOTP entry with service name and secret key.
+    Returns the created record with ID and creation timestamp.
+    """
     result = await create_totp(
         db,
         data.service_name,
@@ -30,6 +34,10 @@ async def create_totp_endpoint(data: TotpCreateRequest, db: AsyncSession = Depen
 
 @router.post("/generate", response_model=TotpGenerateResponse)
 async def generate_totp_endpoint(data: TotpGenerateRequest, db: AsyncSession = Depends(get_db)):
+    """
+    Generate a TOTP code for the given TOTP ID.
+    Returns the current TOTP code or 404 if not found.
+    """
     result = await generate_totp_code(
         db,
         data.id
@@ -41,6 +49,10 @@ async def generate_totp_endpoint(data: TotpGenerateRequest, db: AsyncSession = D
 
 @router.delete("/delete", response_model=TotpDeleteResponse)
 async def delete_totp_endpoint(data: TotpDeleteRequest, db: AsyncSession = Depends(get_db)):
+    """
+    Delete a TOTP entry by ID.
+    Returns deletion status or 404 if TOTP not found.
+    """
     result = await delete_service(
         db,
         data.id
