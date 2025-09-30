@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
-from database import Base
+from core.auth.database import Base
 
 
 class Token(Base):

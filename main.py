@@ -25,6 +25,7 @@ from security.RSA.routers import router as rsa
 from gen_faker.routers import router as faker
 from clamav_antivirus.routers import router as clamav
 from core.auth.user_endpoints import router as auth_user
+from gen_totp.routers import router as totp
 
 from internal_functional.sollaire.routers import router as sollaire
 from internal_functional.info.routers import router as info
@@ -43,7 +44,7 @@ async def lifespan(app: FastAPI):
     await init_db()
     yield
 
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.38 (MVP)",
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.47 (MVP)",
               redoc_url=None, lifespan=lifespan)
 
 app.add_middleware(RateLimitMiddleware)
@@ -72,6 +73,7 @@ app.include_router(rsa, dependencies=[Depends(require_role('admin', 'dev', 'user
 app.include_router(faker, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 app.include_router(clamav, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 app.include_router(auth_user, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(totp, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 
 app.include_router(sollaire, include_in_schema=False, dependencies=[Depends(require_role('admin'))])
 app.include_router(info, include_in_schema=False, dependencies=[Depends(require_role('admin'))])

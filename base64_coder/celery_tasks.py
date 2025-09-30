@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from base64_coder.settings import CONFIG
 from celery_conf import celery_app
+from celery.schedules import crontab
 from logger.init_logger import get_logger
 
 
@@ -21,3 +22,12 @@ def clean_temp_files():
                     logger.info(f"Deleted old temp file: {file_path}")
                 except Exception as e:
                     logger.error(f"Failed to delete file {file_path}: {e}")
+
+
+celery_app.conf.beat_schedule = {
+    'clean_temp_files': {
+        'task': 'base64_coder.celery_tasks.clean_temp_files',
+        'schedule': crontab(minute=0, hour=0),
+        'args': (),
+    },
+}
