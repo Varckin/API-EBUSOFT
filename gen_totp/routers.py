@@ -18,6 +18,11 @@ from gen_totp.models import (
 router = APIRouter(prefix="/totp", tags=["TOTP"])
 
 
+@router.get("/health", response_model=str)
+async def health() -> str:
+    """Health check specifically for the totp module."""
+    return "ok"
+
 @router.post("/create", response_model=TotpCreateResponse)
 async def create_totp_endpoint(data: TotpCreateRequest, db: AsyncSession = Depends(get_db)):
     """
