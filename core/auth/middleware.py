@@ -1,8 +1,8 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.future import select
-from database import AsyncSessionLocal
-from models import Token
+from core.auth.database import AsyncSessionLocal
+from core.auth.models import Token
 from datetime import datetime, timezone
 from core.auth.settings import CONFIG
 from starlette.middleware.base import BaseHTTPMiddleware
