@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 from core.auth.settings import CONFIG
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
@@ -8,8 +8,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.auth.models import Token
 import secrets
 from logger.init_logger import get_logger
+from core.base.base import Base
 
-Base = declarative_base()
+
 logger = get_logger('auth_db')
 
 engine = create_async_engine(CONFIG.DATABASE_URL, echo=False, future=True)

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, DateTime
 from datetime import datetime, timezone
 import secrets
-from gen_totp.database import Base
+from core.base.base import Base
 
 
 class TotpTable(Base):

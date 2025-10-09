@@ -22,6 +22,7 @@ services:
     volumes:
       - ./tmp:/app/tmp
       - ./logs:/app/logs
+      - ./database.db:/app/database.db
     env_file:
       - .env
     restart: unless-stopped

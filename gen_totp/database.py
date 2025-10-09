@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 from pyotp import TOTP
 from logger.init_logger import get_logger
@@ -13,7 +13,6 @@ from gen_totp.models import (
 from gen_totp.security import encrypt_secret, decrypt_secret
 
 
-Base = declarative_base()
 logger = get_logger('totp')
 
 engine = create_async_engine(CONFIG.DATABASE_URL, echo=False, future=True)
