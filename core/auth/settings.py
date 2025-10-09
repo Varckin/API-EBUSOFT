@@ -8,6 +8,8 @@ class Settings(BaseModel):
     ADMIN_MASTER_TOKEN: str = getenv('ADMIN_MASTER_TOKEN')
     WHITELIST_PATHS: List[str] = [
         "/",
+        "/health",
+        "/favicon.ico",
         "/docs",
         "/openapi.json",
         "/admin/health",
