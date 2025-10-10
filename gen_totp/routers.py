@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from gen_totp.database import get_db
+from core.base.base import get_db
 from gen_totp.database import (
     create_totp, generate_totp_code,
     delete_service

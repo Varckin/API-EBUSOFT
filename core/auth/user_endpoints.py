@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.auth.database import refresh_token, get_db
+from core.auth.database import refresh_token
+from core.base.base import get_db
 
 
 router = APIRouter(prefix="/token", tags=["token"])

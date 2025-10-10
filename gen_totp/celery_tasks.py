@@ -2,7 +2,8 @@ from celery.schedules import crontab
 from celery_conf import celery_app
 from sqlalchemy import select
 from datetime import datetime, timedelta, timezone
-from gen_totp.database import delete_service, AsyncSessionLocal
+from gen_totp.database import delete_service
+from core.base.base import AsyncSessionLocal
 from gen_totp.db_models import TotpTable
 import asyncio
 from logger.init_logger import get_logger

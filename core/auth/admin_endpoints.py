@@ -3,7 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from core.auth.models import Token
 from core.auth.dependencies import verify_admin_master
-from core.auth.database import add_token, delete_token, get_db
+from core.auth.database import add_token, delete_token
+from core.base.base import get_db
 
 
 router = APIRouter(prefix="/admin", tags=["admin"])
