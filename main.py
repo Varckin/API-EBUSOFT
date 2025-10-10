@@ -35,6 +35,7 @@ from core.auth.admin_endpoints import router as auth_admin
 from core.rate_limit.middleware import RateLimitMiddleware
 from core.auth.middleware import TokenAuthMiddleware
 from core.auth.database import init_db
+from core.migrations.migrate import run_migrations
 from core.auth.dependencies import require_role
 from dotenv import load_dotenv
 
@@ -43,6 +44,7 @@ load_dotenv()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    await run_migrations()
     yield
 
 app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.47 (MVP)",
