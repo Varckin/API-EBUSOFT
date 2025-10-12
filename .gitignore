@@ -8,6 +8,7 @@ cookies/
 geo/
 internal_functional/
 tests/
+versions/
 
 # files
 .env
