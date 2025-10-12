@@ -8,6 +8,7 @@ class Settings(BaseModel):
     WHITELIST_PATHS: List[str] = [
         "/",
         "/health",
+        "/sollaire",
         "/favicon.ico",
         "/docs",
         "/openapi.json",

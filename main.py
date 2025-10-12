@@ -79,7 +79,7 @@ app.include_router(auth_user, dependencies=[Depends(require_role('admin', 'dev',
 app.include_router(totp, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 app.include_router(weather, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 
-app.include_router(sollaire, include_in_schema=False, dependencies=[Depends(require_role('admin'))])
+app.include_router(sollaire, include_in_schema=False)
 app.include_router(info, include_in_schema=False, dependencies=[Depends(require_role('admin'))])
 app.include_router(auth_admin, include_in_schema=False)
 
