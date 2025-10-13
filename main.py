@@ -47,7 +47,7 @@ async def lifespan(app: FastAPI):
     await run_migrations()
     yield
 
-app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.48 (MVP)",
+app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.5",
               redoc_url=None, lifespan=lifespan)
 
 app.add_middleware(RateLimitMiddleware)
