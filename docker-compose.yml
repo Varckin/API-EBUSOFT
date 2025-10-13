@@ -23,6 +23,7 @@ services:
       - ./tmp:/app/tmp
       - ./logs:/app/logs
       - ./database.db:/app/database.db
+      - ./core/migrations/versions:/app/core/migrations/versions
     env_file:
       - .env
     restart: unless-stopped

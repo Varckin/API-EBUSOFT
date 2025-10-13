@@ -2,12 +2,12 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 from core.base.base import Base
-from core.base.base import DATABASE_URL
+
+from core.auth.models import Token
+from gen_totp.db_models import TotpTable
 
 
 config = context.config
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
-
 target_metadata = Base.metadata
 
 def run_migrations_offline():

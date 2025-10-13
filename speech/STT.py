@@ -9,7 +9,7 @@ from logger.init_logger import get_logger
 from speech.settings import SETTINGS
 
 
-logger = get_logger()
+logger = get_logger("STT")
 warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using FP32 instead")
 
 

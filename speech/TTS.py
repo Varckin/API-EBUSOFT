@@ -9,7 +9,7 @@ from pydub import AudioSegment
 from logger.init_logger import get_logger
 from speech.settings import SETTINGS
 
-logger = get_logger()
+logger = get_logger("TTS")
 
 
 class TTS:
