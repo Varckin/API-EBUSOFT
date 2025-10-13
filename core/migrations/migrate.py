@@ -42,10 +42,13 @@ async def run_migrations():
 
         def _run_migrations():
             try:
-                logger.info("Creating an auto-generated migration...")
+                logger.info("Checking for schema changes...")
+                command.check(cfg)
+                logger.info("No schema changes detected, skipping migration creation")
+
+            except Exception:
+                logger.info("Schema changes detected, creating migration...")
                 command.revision(cfg, message="auto migration", autogenerate=True)
-            except Exception as e:
-                logger.warning(f"Auto-generation of migration failed: {e}")
             
             logger.info("Applying migrations...")
             command.upgrade(cfg, "head")
