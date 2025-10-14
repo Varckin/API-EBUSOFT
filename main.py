@@ -27,6 +27,8 @@ from clamav_antivirus.routers import router as clamav
 from core.auth.user_endpoints import router as auth_user
 from gen_totp.routers import router as totp
 from weather.routers import router as weather
+from anonim_mail.routers import router as anonmail
+from translate.routers import router as translate
 
 from internal_functional.sollaire.routers import router as sollaire
 from internal_functional.info.routers import router as info
@@ -78,6 +80,8 @@ app.include_router(clamav, dependencies=[Depends(require_role('admin', 'dev', 'u
 app.include_router(auth_user, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 app.include_router(totp, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 app.include_router(weather, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(anonmail, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
+app.include_router(translate, dependencies=[Depends(require_role('admin', 'dev', 'user'))])
 
 app.include_router(sollaire, include_in_schema=False)
 app.include_router(info, include_in_schema=False, dependencies=[Depends(require_role('admin'))])
