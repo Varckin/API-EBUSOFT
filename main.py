@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -51,6 +52,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.5",
               redoc_url=None, lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"],
+)
 
 app.add_middleware(RateLimitMiddleware)
 app.add_middleware(TokenAuthMiddleware)
