@@ -43,7 +43,7 @@ class TokenAuthMiddleware(BaseHTTPMiddleware):
             if token_obj.revoked:
                 logger.warning(f"Revoked token attempt: token={token_value}, path={request.url.path}, revoked={token_obj.revoked}")
                 return JSONResponse({"detail": "Token revoked"}, status_code=401)
-            if token_obj.expires_at < datetime.now(timezone.utc):
+            if expires_at < datetime.now(timezone.utc):
                 logger.warning(f"Expired token attempt: token={token_value}, role={token_obj.role}, expires_at={token_obj.expires_at}, path={request.url.path}")
                 return JSONResponse({"detail": "Token expired"}, status_code=401)
 
