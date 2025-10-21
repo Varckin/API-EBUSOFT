@@ -16,6 +16,9 @@ class TokenAuthMiddleware(BaseHTTPMiddleware):
         self.whitelist_paths = CONFIG.WHITELIST_PATHS
 
     async def dispatch(self, request: Request, call_next):
+        if request.method == "OPTIONS":
+            return await call_next(request)
+        
         if request.url.path in self.whitelist_paths:
             return await call_next(request)
 
