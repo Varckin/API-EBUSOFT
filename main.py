@@ -54,7 +54,8 @@ app = FastAPI(title="API EBUSOFT TECHNOLOGY", version= "1.5",
               redoc_url=None, lifespan=lifespan)
 
 app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"],
+    CORSMiddleware, allow_origins=["*"],
+    allow_methods=["*"], allow_headers=["Authorization", "Content-Type"],
 )
 
 app.add_middleware(RateLimitMiddleware)
