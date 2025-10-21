@@ -33,6 +33,10 @@ class TokenAuthMiddleware(BaseHTTPMiddleware):
             result = await session.execute(select(Token).where(Token.token == token_value))
             token_obj = result.scalars().first()
 
+            expires_at = token_obj.expires_at
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+
             if not token_obj:
                 logger.warning(f"Invalid token attempt: token={token_value}, path={request.url.path}")
                 return JSONResponse({"detail": "Invalid token"}, status_code=401)
