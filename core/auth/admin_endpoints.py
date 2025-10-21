@@ -20,7 +20,7 @@ async def add_token_endpoint(role: str,
                              admin=Depends(verify_admin_master),
                              db: AsyncSession = Depends(get_db)):
     """Create a new token with the specified role."""
-    token = add_token(db, role)
+    token = await add_token(db, role)
     return {"token": token.token, "role": token.role, "expires_at": token.expires_at}
 
 @router.delete("/remove-token")
@@ -28,7 +28,7 @@ async def remove_token_endpoint(token: str,
                                 admin=Depends(verify_admin_master),
                                 db: AsyncSession = Depends(get_db)):
     """Delete an existing token by its string value."""
-    success = delete_token(db, token)
+    success = await delete_token(db, token)
     if not success:
         raise HTTPException(status_code=404, detail="Token not found")
     return {"msg": f"Token {token} removed"}
