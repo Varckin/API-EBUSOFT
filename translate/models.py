@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, RootModel
 from typing import List, Optional, Dict, Any
 
 
@@ -19,8 +19,8 @@ class TranslationsModel(BaseModel):
     possible_mistakes: Optional[List[str]]
 
 
-class DefinitionSynonyms(BaseModel):
-    __root__: Dict[str, List[str]]
+class DefinitionSynonyms(RootModel[Dict[str, List[str]]]):
+    pass
 
 
 class DefinitionModel(BaseModel):

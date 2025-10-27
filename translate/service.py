@@ -1,5 +1,4 @@
 import httpx
-from typing import Optional
 from translate.models import TranslateRequest, TranslateResponse
 from translate.settings import CONFIG
 
