@@ -17,5 +17,6 @@ RUN pip install --upgrade pip setuptools wheel \
 
 
 COPY . .
+RUN chown -R 1000:1000 /app
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9999", "--workers", "1"]
