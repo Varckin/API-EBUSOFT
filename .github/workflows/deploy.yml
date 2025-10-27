@@ -46,5 +46,8 @@ jobs:
 
             echo "🐳 Building and starting services..."
             docker compose up -d --build
+            
+            echo "🐳 Restarting NGINX Container..."
+            docker restart nginx
 
             echo "✅ Deployment completed successfully!"
