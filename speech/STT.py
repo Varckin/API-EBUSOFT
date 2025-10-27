@@ -15,7 +15,7 @@ warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using F
 
 class STT:
     def __init__(self):
-        self.model = whisper.load_model(SETTINGS.STT.WHISPER_MODEL)
+        self.model = whisper.load_model(SETTINGS.STT.WHISPER_MODEL, download_root=SETTINGS.PATHS.STT_MODEL_DIR)
 
     def convert_voice_to_text(self, source_path: Path, destination_path: Path) -> tuple[str, str]:
         """

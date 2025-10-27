@@ -13,6 +13,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: api_ebusoft
+    user: "1000:1000"
     depends_on:
       - redis
     expose:
@@ -24,6 +25,7 @@ services:
       - ./logs:/app/logs
       - ./database.db:/app/database.db
       - ./core/migrations/versions:/app/core/migrations/versions
+      - ./speech/stt_model:/app/speech/stt_model
     env_file:
       - .env
     restart: unless-stopped
@@ -33,6 +35,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: api_ebusoft_worker
+    user: "1000:1000"
     restart: unless-stopped
     depends_on:
       - redis

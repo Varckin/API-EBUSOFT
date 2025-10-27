@@ -9,6 +9,7 @@ from pydantic import BaseModel, PositiveInt, Field
 class PathsSettings(BaseModel):
     """File paths and temporary file limits."""
     TMP_DIR: Path = Field(default=Path("./tmp/speech"), description="Folder for temporary audio files.")
+    STT_MODEL_DIR: Path = Field(default=Path("./speech/stt_model"), description="Folder for STT model.")
     MAX_TMP_FILES: PositiveInt = Field(default=40, description="File limit in TMP_DIR, after which the folder is cleaned.")
     MAX_FILE_SIZE_MB: PositiveInt = Field(default=15, description="Maximum upload size for audio files in megabytes.")
 
@@ -37,3 +38,4 @@ class SpeechSettings(BaseModel):
 SETTINGS = SpeechSettings()
 
 SETTINGS.PATHS.TMP_DIR.mkdir(parents=True, exist_ok=True)
+SETTINGS.PATHS.STT_MODEL_DIR.mkdir(parents=True, exist_ok=True)

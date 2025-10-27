@@ -1,0 +1,49 @@
+name: Deploy API EBUSOFT
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            PROJECT_DIR="${{ secrets.PATH_API }}"
+            REPO_URL="${{ secrets.GIT_URL }}"
+
+            if [ ! -d "$PROJECT_DIR/.git" ]; then
+              echo "📁 Initializing repo..."
+
+              mkdir -p "$PROJECT_DIR"
+              cd "$PROJECT_DIR"
+              git init
+              git remote add origin "$REPO_URL"
+              git fetch origin main
+              git reset --hard origin/main
+            else
+              echo "🔄 Update rep..."
+              cd "$PROJECT_DIR"
+              git fetch origin main
+              git reset --hard origin/main
+            fi
+
+            cd $PROJECT_DIR
+
+            echo "🧹 Cleaning Docker system..."
+            docker system prune -af
+
+            echo "🐳 Restarting Docker containers..."
+            docker compose down
+
+            echo "🐳 Building and starting services..."
+            docker compose up -d --build
+
+            echo "✅ Deployment completed successfully!"
